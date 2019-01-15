@@ -1,0 +1,10 @@
+server:
+  port: 9098    #port number
+
+spring:
+  application:
+    name: dob-service    #service name
+
+logging:
+  level:
+    ROOT: DUBUG

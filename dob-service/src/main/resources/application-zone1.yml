@@ -1,0 +1,26 @@
+server:
+  port: 9098   #port number
+
+instance:
+  metadataMap.zone: us-east-1a
+
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 2
+  client:
+    region: us-east-1
+    service-url:
+      us-east-1a: http://ec2-34-201-16-253.compute-1.amazonaws.com:8080/eureka/v2
+      us-east-1b: http://ec2-34-239-117-167.compute-1.amazonaws.com:8080/eureka/v2
+      us-east-1c: http://ec2-54-147-212-181.compute-1.amazonaws.com:8080/eureka/v2
+
+    availability-zones:
+        us-east-1: us-east-1a, us-east-1b, us-east-1c
+    healthcheck:
+      enabled: true
+    lease:
+      duration: 5
+
+spring.profiles.active: zone1

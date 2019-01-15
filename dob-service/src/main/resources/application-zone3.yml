@@ -1,0 +1,5 @@
+server:
+  port: 9098    #port number
+
+instance:
+  metadataMap.zone: us-east-1c

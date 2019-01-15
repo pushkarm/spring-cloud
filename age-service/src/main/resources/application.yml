@@ -1,0 +1,28 @@
+# service running port on machine
+server.port: 9097   #port number
+
+# service name - when register with eureka this name which get register
+spring:
+  application:
+    name: age-service    #service name
+
+# application level logging
+logging:
+  level:
+    ROOT: DEBUG
+
+# register with same zone eureka server
+# zone's eureka server configuration
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    prefer-same-zone-eureka: true
+    region: region-1
+    service-url:
+      zone1: http://localhost:8761/eureka/
+      zone2: http://127.0.0.1:8762/eureka/
+    availability-zones:
+      region-1: zone1,zone2
+  instance:
+    metadataMap.zone: zone1

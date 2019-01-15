@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Age Calculator</title>
+    <script
+            src="https://code.jquery.com/jquery-2.2.4.js"
+            integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+            crossorigin="anonymous"></script>
+
+    <script>
+
+        function onAge() {
+            dob = document.getElementById("dob").value;
+            $.ajax({
+                url: "/age",
+                type: "get",
+                data: {
+                    dob: dob
+                },
+                success: function(response){
+                    console.log(response);
+                    document.getElementById('age').innerText = response;
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+
+            });
+
+        }
+    </script>
+</head>
+<body>
+
+<h1>Age Calculator</h1>
+<p>
+
+    <input type="text" id="dob">
+    <input type="submit" onclick="onAge()">
+
+</p>
+
+<p>
+   <h2> Age is </h2>
+    <h3 id="age"/>
+
+
+</p>
+</body>
+</html>
