@@ -1,6 +1,7 @@
 package com.example.client;
 
 
+import com.netflix.discovery.EurekaClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,7 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -29,40 +27,44 @@ public class CalculateAgeController {
 
     private static final Logger logger = LoggerFactory.getLogger(CalculateAgeController.class);
 
-    @LoadBalanced
-    @Bean
-    RestTemplate restTemplate(){
-        return new RestTemplate();
-    }
-
     @Autowired
     RestTemplate restTemplate;
 
     @Autowired
     private DiscoveryClient discoveryClient;
 
+    @ResponseBody
     @RequestMapping(value = "/age", method = RequestMethod.GET)
     public int getStudents(@RequestParam("dob") String dob) {
 
-        logger.debug("Dob is '{}'", dob);
+        logger.info("Dob is '{}'", dob);
 
         //For example only. Shows our list of instances
         final List<ServiceInstance> instances = this.discoveryClient.getInstances("age-service");
+
+        logger.info("Instances size ===========> {}", instances.size());
+
         for(final ServiceInstance instance : instances){
             logger.info("Instance: {} ", instance.getHost().toString());
             logger.info("Port: {} ", instance.getPort());
             logger.info("URI: {} ", instance.getUri().toString());
+            logger.info("Scheme: {} ", instance.getScheme());
+            logger.info("Service Id : {} ", instance.getServiceId());
         }
 
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://age-service/age")
-                .queryParam("dob", dob);
+        if(instances.size() != 0) {
 
-        ResponseEntity<Integer> response = restTemplate.exchange(uriBuilder.toUriString(),
-                HttpMethod.GET, null, Integer.class);
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://age-service/age")
+                    .queryParam("dob", dob);
 
-        logger.debug("Age for dob '{}' is {} ", dob, response.getBody());
+            ResponseEntity<Integer> response = restTemplate.exchange(uriBuilder.toUriString(),
+                    HttpMethod.GET, null, Integer.class);
 
-        return response.getBody();
+            logger.debug("Age for dob '{}' is {} ", dob, response.getBody());
 
+            return response.getBody();
+        }
+
+        return 0;
     }
 }

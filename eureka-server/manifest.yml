@@ -1,0 +1,7 @@
+applications:
+- name: eureka-server-cf
+  path: target/eureka-server-0.0.1-SNAPSHOT.jar
+  instances: 1
+  memory: 400m
+  env:
+    JAVA_OPTS: '-XX:MaxMetaspaceSize=80780K -Xss512k -Xmx200M -XX:ReservedCodeCacheSize=16M -XX:MaxDirectMemorySize=16M'

@@ -1,0 +1,10 @@
+server.port: 8761
+
+eureka:
+  instance:
+    hostname: ${vcap.application.uris[0]:localhost}
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${PORT:server.port}/eureka/

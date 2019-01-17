@@ -1,9 +1,8 @@
-server:
-  port: 9098    #port number
+server.port: 9098
 
 spring:
   application:
-    name: dob-service    #service name
+    name: dob-service
 
 logging:
   level:
